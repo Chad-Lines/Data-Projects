@@ -78,7 +78,9 @@ ERROR: character with byte sequence 0x81 in encoding "WIN1252" has no equivalent
     - I did the same: I ran `\encoding UTF8` in `PSQL` and after that I re-ran my `\copy` statement without a hitch!
 ### Planning the Schema
 - The table schema is as follows:
+
 ![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/1.png)
+
 - And here's a look at the data:
 
 **QUERY:**
@@ -88,7 +90,7 @@ FROM raw_netflix_data
 LIMIT 5
 ```
 **RESULT:**
-![alt text](\image_container\2.png)
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/2.png)
 
 #### Problems
 - This is just a flat file with a lot of semi-structured data
@@ -187,7 +189,7 @@ SELECT COUNT(*) FROM Dim_Date 	-- Returns: 35332
 SELECT * FROM Dim_Date ORDER BY date_id DESC LIMIT 10
 ```
 **RESULT:**
-![alt text](\image_container\3.png)
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/3.png)
 #### The Other Dimension Tables
 - The other dimension tables were pretty straightforward. I created them as follows:
 
@@ -233,7 +235,8 @@ CREATE TABLE Dim_Genre (
 SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'
 ```
 **RESULT:**
-![alt text](\image_container\4.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/4.png)
 
 ### Creating the Fact Table
 - As I began putting together the `Fact_Netflix_Shows` table, I realized that I have a problem with the `Duration` field. It is an `INT` followed by a `STRING` and it's different:
@@ -402,7 +405,8 @@ INSERT INTO Fact_Netflix_Shows
 SELECT * FROM Fact_Netflix_Shows
 ```
 **RESULT:**
-![alt text](\image_container\5.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/5.png)
 
 
 ### Populating the Link Tables
@@ -481,7 +485,9 @@ CREATE MATERIALIZED VIEW Genre_Popularity_Over_Time AS
 	ORDER BY f.Release_Year, Show_Count DESC
 ```
 **RESULT:**
-![alt text](\image_container\6.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/6.png)
+
 **OBSERVATION:**
 - This view provides a great way to explore different genres. For example, using:
 ```SQL
@@ -490,7 +496,8 @@ FROM Genre_Popularity_Over_Time
 WHERE genre_description LIKE '%Horror Movies%'
 ORDER BY release_year DESC
 ```
-![alt text](\image_container\22.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/22.png)
 
 - This shows that there has been a sharp up-tick in horror movies produce (and added to Netflix) since 2013. 
 
@@ -511,7 +518,9 @@ CREATE MATERIALIZED VIEW Directors_Most_Titles AS
 	ORDER BY Title_Count DESC;
 ```
 **RESULT:**
-![alt text](\image_container\7.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/7.png)
+
 **OBSERVATION:**
 - This one is pretty self explanatory. It shows us which directors tend to focus on which genres 
 - We can narrow this down to an exploration of the works of a single director. For example, we can see what genres one of my personal favorite directors tends to work in:
@@ -519,7 +528,8 @@ CREATE MATERIALIZED VIEW Directors_Most_Titles AS
 SELECT * FROM Directors_Most_Titles
 WHERE director_name LIKE '%Sam Raimi%'
 ```
-![alt text](\image_container\23.png)
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/23.png)
+
 - This actually piqued my curiosity. I was curious about how many movies Sam Raimi had on Netflix (it must only be a few), and what movies would span those genres. So I ran:
 ```SQL
 SELECT d.Director_Name, f.Title
@@ -528,7 +538,9 @@ JOIN Shows_Directors_Link sdl ON f.Show_ID = sdl.Show_ID
 JOIN Dim_Director d ON sdl.Director_ID = d.Director_ID
 WHERE d.Director_Name LIKE '%Sam Raimi%'
 ```
-![alt text](\image_container\24.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/24.png)
+
 - Yeah, that makes sense - although, I might argue there are **two** classics on that list :) 
 - That also prompted me to create yet-another view
 ```SQL
@@ -554,7 +566,9 @@ CREATE MATERIALIZED VIEW Content_Production_By_Country AS
 	ORDER BY Production_Count DESC;
 ```
 **RESULT:**
-![alt text](\image_container\8.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/8.png)
+
 **OBSERVATION:**
 - This is pretty self-explanatory.
 ### Release Pattern Analysis
@@ -575,7 +589,9 @@ CREATE MATERIALIZED VIEW Titles_Added_Over_Time AS
 	ORDER BY Year_Added, Month_Added;
 ```
 **RESULT:**
-![alt text](\image_container\9.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/9.png)
+
 **OBSERVATIONS:**
 - It's not surprising to see that, for the most part, more titles are added overtime. It could be helped by aggregating a bit further:
 ```SQL
@@ -584,7 +600,9 @@ FROM Titles_Added_Over_Time
 GROUP BY year_added
 ORDER BY year_added DESC
 ```
-![alt text](\image_container\25.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/25.png)
+
 #### A View for "Catalog Freshness (Release Year vs. Year Added)"
 - **Original Idea:** Compare the release year of titles to the year they were added to Netflix to see how fresh the Netflix catalog is
 - **View:** I need a view that compares the release year of titles to the year they were added to Netflix, providing insights into the catalog's freshness.
@@ -603,7 +621,9 @@ CREATE MATERIALIZED VIEW Catalog_Freshness AS
 	ORDER BY f.Release_Year, Year_Added;
 ```
 **RESULT:**
-![alt text](\image_container\10.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/10.png)
+
 **OBSERVATIONS:**
 - For the sake of illustration, it could help to aggregate this one a little further as well
 ```SQL
@@ -614,7 +634,9 @@ FROM Catalog_Freshness
 GROUP BY year_added
 ORDER BY year_added DESC
 ```
-![alt text](\image_container\26.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/26.png)
+
 ### Content Rating Analysis
 #### A View for "Distribution of Content Ratings Over Time"
 - **Original Idea:** Investigate the distribution of content ratings to see if there's a trend towards more family-friendly or adult-oriented content
@@ -634,7 +656,9 @@ CREATE MATERIALIZED VIEW Content_Rating_Distribution AS
 	ORDER BY Year_Added, r.Rating_Description;
 ```
 **RESULT:**
-![alt text](\image_container\11.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/11.png)
+
 **OBSERVATIONS:**
 - At face value, this doesn't look like much, but it helps if we do some filtering. For example, we can see how much "adult" media has been added to Netflix over time with the following query:
 ```SQL
@@ -642,7 +666,9 @@ SELECT * FROM Content_Rating_Distribution
 WHERE rating_description IN ('TV-MA', 'R','NC-17')
 ORDER BY year_added DESC, title_count
 ```
-![alt text](\image_container\27.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/27.png)
+
 #### A View for "Content Rating by Genre"
 - **Original Idea:** Explore whether certain genres are more likely to have specific ratings
 - **View:** I need a view that explores the relationship between genres and content ratings
@@ -662,7 +688,9 @@ ORDER BY year_added DESC, title_count
 	ORDER BY g.Genre_Description, r.Rating_Description;
 ```
 **RESULT:**
-![alt text](\image_container\12.png)\
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/12.png)
+
 **OBSERVATIONS:**
 - This data is fine. We can probably do some aggregations or filtering to get a clearer view of things, but as a start, this is good, and - were this put into a visualization - we may want to allow the business user to do those operations on their own
 ### Duration Insights
@@ -682,7 +710,9 @@ CREATE MATERIALIZED VIEW Avg_Movie_Duration_Over_Time AS
 	ORDER BY f.Release_Year;
 ```
 **RESULT:**
-![alt text](\image_container\13.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/13.png)
+
 **OBSERVATIONS:**
 - This one is pretty self-explanatory.
 #### A View for "Average Number of Seasons per TV Show by Genre"
@@ -705,7 +735,9 @@ CREATE MATERIALIZED VIEW Avg_Seasons_Per_Genre AS
 	ORDER BY Avg_Number_of_Seasons DESC;
 ```
 **RESULT:**
-![alt text](\image_container\14.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/14.png)
+
 **OBSERVATIONS:**
 - `Classic & Cult TV` is the obvious stand-out here. 
 ### Text Analysis
@@ -810,9 +842,13 @@ CREATE MATERIALIZED VIEW title_description_sentiment_analysis AS
 	SELECT * FROM ta_sentiment_analysis
 ```
 **RESULT: (most_commonly_used_words)**
-![alt text](\image_container\15.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/15.png)
+
 **RESULT: (title_description_sentiment_analysis)**
-![alt text](\image_container\16.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/16.png)
+
 **OBSERVATIONS:**
 - This provides the information I wanted to include. It looks like "life", "family" and "love" are big themes among Netflix media
 ### Viewer Interests
@@ -871,7 +907,9 @@ CREATE MATERIALIZED VIEW genre_correlations_view AS
 	SELECT * FROM genre_correlations
 ```
 **RESULT: (genre_correlations_view)**
-![alt text](\image_container\17.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/17.png)
+
 **OBSERVATIONS:**
 - The meaning of this table may not be immediately obvious. A question that it might answer is "If I like International Movies, what other genre might I like?" and the answer, per row 1, would be "Dramas"
 - It's, admittedly, not a very robust recommendation solution, but it provides a general overview of the genre correlations
@@ -931,19 +969,25 @@ CREATE MATERIALIZED VIEW actors_and_genres_most_common AS
 	FROM da_actor_genre_frequencies
 ```
 **RESULT: (actors_and_genres_total)**
-![alt text](\image_container\18.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/18.png)
+
 **OBSERVATIONS:**
 - This table would certainly need to be filtered and aggregated to provide more meaningful insights. However, I'm happy with this table as a basis for those operations.
 
 **RESULT: (actors_and_genres_most_common)**
-![alt text](\image_container\19.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/19.png)
+
 **OBSERVATIONS:**
 - This table is great. It's interesting to look for specific actors/actresses. As in:
 ```SQL
 SELECT * FROM actors_and_genres_most_common
 WHERE actor_name IN ('Philip Seymour Hoffman', 'Jim Carrey')
 ```
-![alt text](\image_container\28.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/28.png)
+
 ### Cleanup
 #### Renaming Tables
 - With some of the tables, especially those which I created for exporting for Python - I was a little haphazard in the naming. I mentioned before that I have a *light* obsession with continuity, so I'm going to go ahead and clean that up.
@@ -962,9 +1006,13 @@ ALTER TABLE genre_correlations
 - Because the views were created as **Materialized** Views it is not necessary to redo the views after renaming the tables.
 - **However**, if I was going to be using this dataset beyond this one project, then I would go ahead and update the views based on those tables, even though it's not strictly necessary
 - Here are our beautiful tables. For the sake of continuity, I should rename the `link` tables to have `link_` as a prefix rather than a suffix, but - as with the views - it's already "better than good; it's *good enough*."
-![alt text](\image_container\20.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/20.png)
+
 - And here are the final views:
-![alt text](\image_container\21.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Netflix%20Data%20Preparation/image_container/21.png)
+
 
 ---
 
