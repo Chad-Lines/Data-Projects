@@ -78,7 +78,7 @@ ERROR: character with byte sequence 0x81 in encoding "WIN1252" has no equivalent
     - I did the same: I ran `\encoding UTF8` in `PSQL` and after that I re-ran my `\copy` statement without a hitch!
 ### Planning the Schema
 - The table schema is as follows:
-![alt text](\image_container\1.png)
+![alt text](/image_container/1.png)
 - And here's a look at the data:
 
 **QUERY:**
