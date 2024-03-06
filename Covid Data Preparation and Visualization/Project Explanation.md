@@ -51,7 +51,8 @@ FROM CovidDeaths
 ORDER BY 1,2
 ```
 **Results:**
-![Results Image](\image_container\results_1.png)
+
+![Results Image](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_1.png)
 
 ---
 
@@ -68,7 +69,8 @@ WHERE location LIKE '%states%'
 ORDER BY 1,2
 ```
 **Results:**
-![alt text](\image_container\results_2.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_2.png)
 
 ---
 
@@ -83,7 +85,8 @@ WHERE location LIKE '%states%'
 ORDER BY 1,2
 ```
 **Results:**
-![alt text](\image_container\results_3.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_3.png)
 
 ---
 
@@ -99,7 +102,9 @@ GROUP BY location, population
 ORDER BY highest_infection_count DESC
 ```
 - I get the following output:
-![alt text](\image_container\error_1.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/error_1.png)
+
 - Well that's not good...
 #### Exploring the 'Continent' Data
 - The following query revealed that the `continent` column is `NULL` for those generalized locations.
@@ -126,7 +131,8 @@ GROUP BY location, population
 ORDER BY highest_infection_count DESC
 ```
 **Results:**
-![alt text](\image_container\results_4.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_4.png)
 
 ---
 
@@ -141,7 +147,8 @@ GROUP BY location
 ORDER BY total_death_count DESC
 ```
 **Results:**
-![alt text](\image_container\results_5.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_5.png)
 
 ---
 
@@ -158,7 +165,9 @@ ORDER BY total_death_count DESC
 ```
 
 **Results:**
-![alt text](\image_container\results_6.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_6.png)
+
 #### Combining Europe and European Union
 - Frustratingly this is still not quite good enough because `Europe` and `European Union` are combined 
     - Let's see if I can fix that.
@@ -184,7 +193,9 @@ GROUP BY
 ORDER BY total_death_count DESC;
 ```
 **Results:**
-![alt text](\image_container\results_7.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_7.png)
+
 - That's *okay*, but I did not sum the `total_death_count` of `Europe` and `European Union`, nor do I have any indication whether or not I *should*.
 - My gut, just looking at the data, is that the `Europe` data probably includes the data from `European Union`
     - If this were a more formal project, I would need to confirm that assumption. But since I'm doing this for fun, I'm content to run with that. 
@@ -204,7 +215,9 @@ GROUP BY date
 HAVING SUM(new_cases) > 0;
 ```
 **Results:**
-![alt text](\image_container\results_8.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_8.png)
+
 #### Overall
 ```SQL
 SELECT
@@ -215,7 +228,8 @@ FROM CovidDeaths
 HAVING SUM(new_cases) > 0;
 ```
 **Results:**
-![alt text](\image_container\results_9.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_9.png)
 
 ---
 
@@ -238,7 +252,8 @@ WHERE dea.continent IS NOT NULL
 ORDER BY 2, 3
 ```
 **Results:**
-![alt text](\image_container\results_10.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_10.png)
 
 ---
 
@@ -264,7 +279,8 @@ SELECT *, (Rolling_People_Vaccinated/Population)*100 AS Percent_People_Vaccinate
 FROM PopulationVaccinated
 ```
 **Results:**
-![alt text](\image_container\results_11.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_11.png)
 
 ---
 
@@ -298,7 +314,8 @@ SELECT *, (Rolling_People_Vaccinated/Population)*100 AS Percent_People_Vaccinate
 FROM #PopulationVaccinated
 ```
 **Results:**
-![alt text](\image_container\results_12.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_12.png)
 
 ---
 
@@ -322,7 +339,8 @@ SELECT TOP 100 *
 FROM PercentOfPopulationVaccinated
 ```
 **Results:**
-![alt text](\image_container\results_12.png)
+
+![alt text](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/results_12.png)
 
 ---
 
@@ -358,7 +376,9 @@ FROM PercentOfPopulationVaccinated
     - So I had to jump back into SQL
 #### Fixing CovidSpreadByDate
 - The problem with this view is that the `new_cases` and `new_deaths` were only updated once a week:
-![Results Image](\image_container\2-1.png)
+
+![Results Image](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/2-1.png)
+
 - This is not helpful or - we might assume - *accurate*
 
 - So going back into *Azure Data Studio*, I crafted the following query:
@@ -381,7 +401,9 @@ ORDER BY date
 ```
 **Results:**
 - This yielded much more helpful information:
-![Results Image](\image_container\2-2.png)
+  
+![Results Image](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/2-2.png)
+
 - *Of course, since the data starts in January 2020, we have an oddly high death-percentage for that first entry. I will probably omit that in Power BI*
 - I went ahead and recreated the `CovidSpreadByDate` accordingly
 #### Reconsidering PercentOfPopulationVaccinated
@@ -410,7 +432,9 @@ ORDER BY date
 ```
 **Results:**
 - This is exactly what I'm looking for
-![Results Image](\image_container\2-3.png)
+  
+![Results Image](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/2-3.png)
+
 - After manually verifying the `rolling_vaccination_count` was correct down to the 100th record, I created a new view called `TotalVaccinationsByDateWorldwide` based on the query.
 #### Resolving `NULL` Values
 - The following queries contained `null` values in the corresponding columns:
@@ -425,11 +449,13 @@ ORDER BY date
 ## Creating a COVID Deaths Dashboard
 - This Dashboard shows metrics related to COVID deaths
 
-![Results Image](\image_container\2-4.png)
+![Results Image](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/2-4.png)
+
 ## Creating a COVID Vaccination Dashboard
 - This Dashboard shows metrics related to COVID vaccinations
     
-![Results Image](\image_container\2-5.png)
+![Results Image](https://github.com/Chad-Lines/Data-Projects/blob/main/Covid%20Data%20Preparation%20and%20Visualization/image_container/2-5.png)
+
 # Conclusion
 - Through meticulous data preparation, including splitting and loading data into **Azure SQL**, and subsequent exploration, I gained some interesting insights into the pandemic's impact across continents and countries.
 - By leveraging **SQL** queries, I examined various metrics such as total cases, deaths, death percentages, vaccination rates, and more, facilitating a nuanced understanding of the global situation.
